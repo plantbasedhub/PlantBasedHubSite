@@ -1,7 +1,7 @@
 import React from 'react'
 import RootLayout from '../components/RootLayout'
 import type { AppProps } from 'next/app'
-import '../styles/globals.css'
+import '../styles/home.module.css'
 //import 'react-toastify/dist/ReactToastify.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -10,6 +10,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <Component {...pageProps} />
       </RootLayout>
   )
+
 }
 
 export default MyApp

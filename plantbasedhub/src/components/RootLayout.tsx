@@ -2,7 +2,6 @@ import React, { ReactNode } from 'react';
 import Navbar from './nav';
 //import Footer from '../components/footer'
 //import { SpeedInsights } from '@vercel/speed-insights/next';
-//import 'react-toastify/dist/ReactToastify.css';
 
 interface RootLayoutProps {
     children: ReactNode;

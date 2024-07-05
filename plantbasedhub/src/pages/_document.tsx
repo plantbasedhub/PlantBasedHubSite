@@ -1,4 +1,4 @@
-import Document, { Html, Head, Main, NextScript, DocumentContext } from 'next/document';
+import Document,{ Html, Head, Main, NextScript, DocumentContext } from 'next/document';
 import Image from 'next/image';
 class MyDocument extends Document {
     static async getInitialProps(ctx: DocumentContext) {
@@ -10,15 +10,12 @@ class MyDocument extends Document {
         return (
             <Html lang="pt-pt">
                 <Head>
-                    <meta name="description" content="Official site of Voidwomb. Explore our music, news, and events." />
+                    <meta name="description" content="Official site of PlantBasedHub" />
                     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
                 </Head>
-                <body className="flex flex-col min-h-screen">
-                    <div className="flex-1">
-                    <div className="background-blur"></div>
+                <body>
                     <Main />
                     <NextScript />
-                    </div>
                     <script async src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
                 </body>
             </Html>

@@ -4,10 +4,10 @@ import '../../components/RootLayout'
 
 export default function Home() {
   return (
-    <div className="bg-gray-100 text-white content" style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
+    <div className="bg-gray-100 text-white content backgroundP">
       <Head>
-      <title>Voidwomb - Official Site</title>
-      <meta name="description" content="Official site of Voidwomb. Explore our music, news, and events." />
+      <title>PlantBased Hub - Vegan Worldwide App</title>
+      <meta name="description" content="PlantBased Hub - A Vegan Worldwide App" />
       </Head>
       <div className="bg-transparent rounded-lg mx-auto max-w-2xl">
         <header className="bg-transparent p-4">
