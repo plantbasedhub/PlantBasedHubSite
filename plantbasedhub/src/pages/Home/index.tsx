@@ -4,7 +4,7 @@ import '../../components/RootLayout'
 
 export default function Home() {
   return (
-    <div className="bg-gray-100 text-white content backgroundP">
+    <div className="bg-gray-100 text-white content backgroundP" style={{ backgroundColor: '#80AF81', textDecorationColor: '#D6EFD8' }}>
       <Head>
       <title>PlantBased Hub - Vegan Worldwide App</title>
       <meta name="description" content="PlantBased Hub - A Vegan Worldwide App" />
