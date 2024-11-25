@@ -25,9 +25,9 @@ const Navbar: React.FC = () => {
 
   return (
     <nav className={`${styles.navbar} ${scrolled ? styles.scrolled : ''}`}>
-      <div className={styles.logo}>
+      {/* <div className={styles.logo}>
         <Image src="/plantbasedhubLogo.png" alt="Logo" width={150} height={150} />
-        {/* <Link href="/">PlantBased Hub</Link> */}
+        
       </div>
       <ul className={styles.navLinks}>
         <li>
@@ -50,7 +50,7 @@ const Navbar: React.FC = () => {
         <li>
           <Link href="/contact">Contact</Link>
         </li>
-      </ul>
+      </ul> */}
     </nav>
   );
 };
