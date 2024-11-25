@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <div
       className="bg-gray-100 text-white content backgroundP"
-      style={{ backgroundColor: "#80AF81", textDecorationColor: "#D6EFD8" }}
+      
     >
       <Head>
         <title>PlantBased Hub - Vegan Worldwide App</title>
@@ -17,10 +17,10 @@ export default function Home() {
       </Head>
 
       {/* Navbar */}
-      <nav className="bg-green-600 px-4 py-2 flex items-center justify-between">
+      <nav className="bg-green-600 px-5 flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center">
-          <div className="rounded-full p-2">
+          <div className="rounded-full p-1">
             <Image
               src="/A_Vegan_worldwide_app_1.png"
               alt="Logo"
@@ -35,25 +35,25 @@ export default function Home() {
         <div className="hidden md:flex space-x-6">
           <a
             href="#home"
-            className="text-white hover:text-green-200 transition duration-200"
+            className="text-white hover:text-green-200 transition duration-200 px-3"
           >
             Home
           </a>
           <a
             href="#about"
-            className="text-white hover:text-green-200 transition duration-200"
+            className="text-white hover:text-green-200 transition duration-200 px-3"
           >
             About
           </a>
           <a
             href="#discover"
-            className="text-white hover:text-green-200 transition duration-200"
+            className="text-white hover:text-green-200 transition duration-200 px-3"
           >
             Discover
           </a>
           <a
             href="#contact"
-            className="text-white hover:text-green-200 transition duration-200"
+            className="text-white hover:text-green-200 transition duration-200 px-3"
           >
             Contact
           </a>
@@ -71,7 +71,7 @@ export default function Home() {
       </nav>
 
       {/* Main Content */}
-      <main className="bg-gray-100 py-16">
+      <main className="bg-gray-100 mt-5">
         <div className="container mx-auto px-4 text-center">
           {/* Título Principal */}
           <h1 className="text-4xl font-extrabold mb-4 text-green-800">

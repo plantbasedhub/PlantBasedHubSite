@@ -6,17 +6,17 @@ const Carousel = () => {
     {
       id: 1,
       text: "",
-      image: "/path-to-image1.jpg", // Substitua pelo caminho correto
+      image: "/Recipes/coockies.jpg", // Substitua pelo caminho correto
     },
     {
       id: 2,
       text: "",
-      image: "/path-to-image2.jpg", // Substitua pelo caminho correto
+      image: "/Recipes/oatmeal.jpg", // Substitua pelo caminho correto
     },
     {
       id: 3,
       text: "",
-      image: "/path-to-image3.jpg", // Substitua pelo caminho correto
+      image: "/Recipes/pumpkin.jpg", // Substitua pelo caminho correto
     },
   ];
 
@@ -42,15 +42,16 @@ const Carousel = () => {
         </div>
 
         {/* Imagem */}
-        <div className="relative">
-          <Image
-            src={slides[currentSlide].image}
-            alt="Carousel Slide"
-            width={600}
-            height={400}
-            className="rounded-lg"
-          />
-        </div>
+        <div className="w-[600px] h-[400px]">
+  <Image
+    src={slides[currentSlide].image}
+    alt="Carousel Slide"
+    width={600}
+    height={400}
+    className="object-cover rounded-lg"
+  />
+</div>
+
       </div>
 
       {/* Navegação do Carrossel */}
