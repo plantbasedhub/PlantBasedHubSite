@@ -6,17 +6,17 @@ const Carousel = () => {
     {
       id: 1,
       text: "",
-      image: "/Recipes/coockies.jpg", // Substitua pelo caminho correto
+      image: "/Recipes/coockies.jpg", 
     },
     {
       id: 2,
       text: "",
-      image: "/Recipes/oatmeal.jpg", // Substitua pelo caminho correto
+      image: "/Recipes/oatmeal.jpg", 
     },
     {
       id: 3,
       text: "",
-      image: "/Recipes/pumpkin.jpg", // Substitua pelo caminho correto
+      image: "/Recipes/pumpkin.jpg", 
     },
   ];
 

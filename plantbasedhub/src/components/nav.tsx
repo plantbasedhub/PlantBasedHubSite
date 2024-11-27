@@ -24,34 +24,65 @@ const Navbar: React.FC = () => {
   }, []);
 
   return (
-    <nav className={`${styles.navbar} ${scrolled ? styles.scrolled : ''}`}>
-      <div className={styles.logo}>
-        <Image src="/plantbasedhubLogo.png" alt="Logo" width={150} height={150} />
-        {/* <Link href="/">PlantBased Hub</Link> */}
-      </div>
-      <ul className={styles.navLinks}>
-        <li>
-          <Link href="/">Home</Link>
-        </li>
-        <li>
-          <Link href="/about">About</Link>
-        </li>
-        <li className={styles.dropdown}>
-          <a href="#">Services</a>
-          <ul className={styles.dropdownMenu}>
-            <li>
-              <Link href="/services/service1">Service 1</Link>
-            </li>
-            <li>
-              <Link href="/services/service2">Service 2</Link>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <Link href="/contact">Contact</Link>
-        </li>
-      </ul>
-    </nav>
+    <nav className="bg-green-600 px-4 flex items-center justify-between">
+        {/* Logo */}
+        <div className="flex items-center">
+          <div className="rounded-full">
+            <Image
+              src="/logo.png"
+              alt="Logo"
+              width={75}
+              height={75}
+              className="rounded-full"
+            />
+          </div>
+          <span className="ml-2 text-white text-lg font-bold">
+          </span>
+        </div>
+
+        {/* Links */}
+        <div className="hidden md:flex space-x-6">
+          <a
+            href="#home"
+            className="text-white hover:text-green-200 transition duration-200"
+          >
+            Home
+          </a>
+          <a
+            href="#about"
+            className="text-white hover:text-green-200 transition duration-200"
+          >
+            About
+          </a>
+          <a
+            href="#discover"
+            className="text-white hover:text-green-200 transition duration-200"
+          >
+            Discover
+          </a>
+          <a
+            href="#contact"
+            className="text-white hover:text-green-200 transition duration-200"
+          >
+            Contact
+          </a>
+        </div>
+
+        {/* Buttons */}
+        <div className="flex items-center space-x-4">
+          <Link rel="stylesheet" href="/Auth/Auth" >
+          <button className="text-white border border-white px-4 py-1 rounded hover:bg-green-500 hover:border-green-500 transition duration-200">
+            Log in
+          </button>
+          </Link>
+          <Link rel="stylesheet" href="/Auth/Auth" >
+          <button className="bg-white text-green-600 px-4 py-1 rounded hover:bg-green-500 hover:text-white transition duration-200">
+            Create an account
+          </button>
+          </Link>
+        </div>
+      </nav>
+
   );
 };
 
