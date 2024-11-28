@@ -1,6 +1,37 @@
-.backgroundP{
-    background-color: #80AF81;
-    text-decoration-color: #D6EFD8;
-    
-  }
-  
+/* Background Principal */
+.backgroundP {
+  background-color: #80AF81; /* Cor original do fundo */
+  text-decoration-color: #D6EFD8;
+}
+
+/* Página Principal */
+.page {
+  position: relative; /* Torna o posicionamento da página mais flexível */
+  top: 0;
+  left: 0;
+  width: 100%; /* Garante que ocupa toda a largura */
+  min-height: 100vh; /* Garante que ocupa pelo menos a altura da janela */
+  background: #F5FFCC; /* secondary-100 */
+}
+
+/* Navbar */
+.navbar {
+  --navbar-height: 72px; /* Ajuste a altura exata */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--navbar-height); /* Define a altura da navbar */
+  background-color: rgba(112, 209, 110, 0.8); /* Navbar translúcida */
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+  backdrop-filter: blur(10px); /* Desfoque para transparência */
+}
+
+/* Container Principal */
+.container {
+  padding-top: 80px; /* Ajuste o espaçamento para compensar a navbar */
+  margin: 0; /* Remove margens padrão */
+}

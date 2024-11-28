@@ -6,17 +6,17 @@ const Carousel = () => {
     {
       id: 1,
       text: "",
-      image: "/Recipes/coockies.jpg", 
+      image: "/Recipes/coockies.jpg",
     },
     {
       id: 2,
       text: "",
-      image: "/Recipes/oatmeal.jpg", 
+      image: "/Recipes/oatmeal.jpg",
     },
     {
       id: 3,
       text: "",
-      image: "/Recipes/pumpkin.jpg", 
+      image: "/Recipes/pumpkin.jpg",
     },
   ];
 
@@ -35,27 +35,28 @@ const Carousel = () => {
   return (
     <div className="relative bg-lime-500 py-8 px-4">
       {/* Slide ativo */}
-      <div className="flex flex-col md:flex-row items-center justify-center gap-6">
-        {/* Texto */}
-        <div className="max-w-md bg-lime-500 rounded-lg shadow p-4 text-green-700">
-          <p className="text-lg">{slides[currentSlide].text}</p>
-        </div>
+      <div className="flex flex-col items-center gap-6">
+        {/* Texto (opcional) */}
+        {slides[currentSlide].text && (
+          <div className="max-w-md bg-lime-500 rounded-lg shadow p-4 text-green-700 text-center">
+            <p className="text-lg">{slides[currentSlide].text}</p>
+          </div>
+        )}
 
         {/* Imagem */}
-        <div className="w-[600px] h-[400px]">
-  <Image
-    src={slides[currentSlide].image}
-    alt="Carousel Slide"
-    width={600}
-    height={400}
-    className="object-cover rounded-lg"
-  />
-</div>
-
+        <div className="flex justify-center items-center">
+          <Image
+            src={slides[currentSlide].image}
+            alt="Carousel Slide"
+            width={600}
+            height={400}
+            className="object-cover rounded-lg"
+          />
+        </div>
       </div>
 
       {/* Navegação do Carrossel */}
-      <div className="flex justify-center mt-6 space-x-4">
+      <div className="flex justify-center items-center mt-6 space-x-4">
         <button
           onClick={prevSlide}
           className="bg-green-600 text-white px-3 py-1 rounded-full hover:bg-green-700 transition"

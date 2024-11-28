@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import Navbar from './nav';
+import Navbar from './Navbar';
 //import Footer from '../components/footer'
 //import { SpeedInsights } from '@vercel/speed-insights/next';
 
