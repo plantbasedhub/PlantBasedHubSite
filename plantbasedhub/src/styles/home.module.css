@@ -35,3 +35,45 @@
   padding-top: 80px; /* Ajuste o espaçamento para compensar a navbar */
   margin: 0; /* Remove margens padrão */
 }
+
+.whatIsPlantBasedHub {
+  background-color: #F5FFCC; /* secondary-100 */
+  padding: 2rem 0;
+}
+
+.whatIsPlantBasedHub h2 {
+  color: #2F855A; /* Título verde */
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.whatIsPlantBasedHub p {
+  color: #4A5568; /* Texto principal */
+}
+
+.whatIsPlantBasedHub .gallery {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.whatIsPlantBasedHub .gallery img {
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.whatIsPlantBasedHub button {
+  background-color: #48BB78; /* Botão verde */
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.whatIsPlantBasedHub button:hover {
+  background-color: #38A169; /* Verde escuro no hover */
+}
