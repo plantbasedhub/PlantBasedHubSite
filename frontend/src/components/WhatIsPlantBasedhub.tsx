@@ -32,7 +32,7 @@ export default function WhatIsPlantBasedHub() {
                 <strong>sarah_miller_93</strong>
               </p>
               <p className="text-green-800 font-semibold">
-                "warm tone living room" in HOME DECOR
+                &quot;warm tone living room&quot; in HOME DECOR
               </p>
             </div>
           </div>
