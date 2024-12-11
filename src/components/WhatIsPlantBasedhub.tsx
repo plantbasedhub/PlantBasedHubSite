@@ -21,7 +21,7 @@ export default function WhatIsPlantBasedHub() {
           {/* Imagem 1 */}
           <div className="rounded-lg shadow-lg overflow-hidden">
             <Image
-              src="/images/project1.jpg"
+              src="/logo.png"
               alt="Warm tone living room"
               width={300}
               height={300}
@@ -40,7 +40,7 @@ export default function WhatIsPlantBasedHub() {
           {/* Imagem 2 */}
           <div className="rounded-lg shadow-lg overflow-hidden">
             <Image
-              src="/images/project2.jpg"
+              src="/logo.png"
               alt="Scandinavian interior design"
               width={300}
               height={300}
@@ -56,7 +56,7 @@ export default function WhatIsPlantBasedHub() {
           {/* Imagem 3 */}
           <div className="rounded-lg shadow-lg overflow-hidden">
             <Image
-              src="/images/project3.jpg"
+              src="/logo.png"
               alt="Mid-century modern interior"
               width={300}
               height={300}
