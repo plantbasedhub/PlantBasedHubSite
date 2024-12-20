@@ -61,17 +61,29 @@ const Auth: React.FC = () => {
           <form>
             <h1>Sign In</h1>
             <div className={styles.socialIcons}>
-              <a href="#" className={styles.icon}>
-                <i className="fa-brands fa-google-plus-g"></i>
+            <a href="#" className={styles.icon}>
+                <Image 
+                width={30}
+                height={30}
+                src="/google.png" alt="Google" />
               </a>
               <a href="#" className={styles.icon}>
-                <i className="fa-brands fa-facebook-f"></i>
+              <Image 
+                width={30}
+                height={30}
+                src="/facebook.png" alt="Facebook" />
               </a>
               <a href="#" className={styles.icon}>
-                <i className="fa-brands fa-github"></i>
+              <Image 
+                width={30}
+                height={30}
+                src="/instagram.png" alt="Instagram" />
               </a>
               <a href="#" className={styles.icon}>
-                <i className="fa-brands fa-linkedin-in"></i>
+              <Image 
+                width={30}
+                height={30}
+                src="/twitter.png" alt="Twitter" />
               </a>
             </div>
             <span>or use your email password</span>
