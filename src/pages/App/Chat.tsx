@@ -13,7 +13,7 @@ interface ChatProps {
     return (
       <div className={styles.chatLayout}>
         {/* Header */}
-        <header className={styles.chatHeader}>
+        <header className={styles.chatHeader}> 
           <div className={styles.chatBackButton}>
             <button>
               {/* Icon for back button */}
