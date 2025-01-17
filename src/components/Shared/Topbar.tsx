@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Button } from
+// import { Button } from
 
 const Topbar = () => {
     return(
@@ -15,10 +15,10 @@ const Topbar = () => {
         </Link>
 
         <div className='flex gap-4'>
-            <Button variant="ghost" className="shad-button_ghost"
+            {/* <Button variant="ghost" className="shad-button_ghost"
             onClick={SignOut}>
                 <img src="public/logout.png" alt="logout" />
-            </Button>
+            </Button> */}
 
         </div>
         </section>
