@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link"; // Next.js usa "next/link" e não "react-router-dom"
-import { Button } from "seu-componente-ui"; // Substitua pelo caminho correto do Button
+//import { Button } from "seu-componente-ui"; // Substitua pelo caminho correto do Button
 import { useAuth } from "../../hooks/useauth";
 
 const Topbar: React.FC = () => {
@@ -21,9 +21,9 @@ const Topbar: React.FC = () => {
 
       <div className="flex gap-4">
         {/* Corrigindo a importação do botão */}
-        <Button variant="ghost" className="shad-button_ghost" onClick={SignOut}>
+        {/* <Button variant="ghost" className="shad-button_ghost" onClick={SignOut}>
           <img src="/logout.png" alt="logout" />
-        </Button>
+        </Button> */}
       </div>
     </section>
   );
