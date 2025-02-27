@@ -60,7 +60,7 @@ const Navbar = () => {
       {/* Right Sidebar */}
       <div
         className={`${styles.sidebar} ${
-          isSidebarOpen ? styles.sidebarOpen : ""
+          isSidebarOpen ? styles.sidebarOpen : &quot;&quot;
         }`}
       >
         {/* Botão de Fechar no Topo Direito */}

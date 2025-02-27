@@ -37,7 +37,7 @@ export default function Home() {
         <main className="mt-5">
           <div className="container mx-auto px-4 text-center">
             <p className="text-lg text-green-700 mb-8">
-              PlantBased Hub is more than just an app – it’s a thriving community
+              PlantBased Hub is more than just an app – it&apos;s a thriving community
               for vegans and eco-enthusiasts. Share delicious recipes, connect
               with like-minded individuals, shop sustainably, and inspire change.
               Together, we create a better future.
