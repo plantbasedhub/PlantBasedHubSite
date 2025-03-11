@@ -1,27 +1,36 @@
-'use client';
+
 
 import { useState } from "react";
 import styles from "../../styles/auth.module.css";
 import Image from "next/image";
-import { useAuth } from "../../hooks/useauth";
 
 const Auth = () => {
-  const { login, register } = useAuth();
   const [isActive, setIsActive] = useState(false);
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [message, setMessage] = useState("");
 
   const handleRegisterClick = () => setIsActive(true);
   const handleLoginClick = () => setIsActive(false);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (isActive) {
-      await register(name, email, password);
+    const endpoint = isActive ? "/api/auth/register" : "/api/auth/login";
+    const body = isActive ? { name, email, password } : { email, password };
+
+    const res = await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+      if (!isActive) localStorage.setItem("token", data.token);
+      setMessage(isActive ? "Registro bem-sucedido!" : "Login bem-sucedido!");
     } else {
-      await login(email, password);
+      setMessage(data.error || "Erro na autenticação");
     }
   };
 
@@ -42,6 +51,7 @@ const Auth = () => {
             <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} className={styles.input} />
             <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} className={styles.input} />
             <button type="submit" className={styles.button}>Sign Up</button>
+            <p>{message}</p>
           </form>
         </div>
         <div className={`${styles.formContainer} ${styles.signIn}`}>
@@ -58,6 +68,7 @@ const Auth = () => {
             <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} className={styles.input} />
             <a href="#" className={styles.link}>Forget Your Password?</a>
             <button type="submit" className={styles.button}>Sign In</button>
+            <p>{message}</p>
           </form>
         </div>
         <div className={styles.toggleContainer}>
@@ -80,4 +91,3 @@ const Auth = () => {
 };
 
 export default Auth;
-
