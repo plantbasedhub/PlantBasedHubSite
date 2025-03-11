@@ -1,0 +1,123 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+  
+  .container {
+    min-height: 100vh;
+    background-color: #f7f7f7;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+  }
+  
+  .header {
+    width: 100%;
+    max-width: 1440px;
+    height: 64px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .nav {
+    display: flex;
+    gap: 16px;
+  }
+  
+  .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #80AF81;
+  }
+  
+  .logo span {
+    color: #47bd78;
+  }
+  
+  .authButtons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .login {
+    color: #555;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .register {
+    background-color: #ddd;
+    padding: 6px 12px;
+    border-radius: 5px;
+    color: #666;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .main {
+    text-align: center;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .main h2 {
+    font-size: 28px;
+    color: #444;
+    margin-bottom: 20px;
+  }
+  
+  .buttons {
+    display: flex;
+    gap: 12px;
+  }
+  
+  .startProject {
+    background-color: #2d6a4f;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .continueProject {
+    background-color: #d8f3dc;
+    color: #2d6a4f;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .imageContainer {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .imageContainer img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .footer {
+    width: 100%;
+    max-width: 1440px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    border-top: 1px solid #ccc;
+    font-size: 14px;
+    color: #777;
+  }
+  
