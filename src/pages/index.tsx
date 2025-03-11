@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import styles from "../styles/Home.module.css";
 
+
 export default function Home() {
   return (
     <div className={styles.container}>
@@ -14,8 +15,8 @@ export default function Home() {
           PlantBased <span>Hub</span>
         </h1>
         <div className={styles.authButtons}>
-          <button className={styles.login}>Login</button>
-          <button className={styles.register}>Register</button>
+          <Link href="/Auth"><button className={styles.login}>Login</button></Link>
+          <Link href="/Auth"><button className={styles.register}>Register</button></Link>
         </div>
       </header>
 
