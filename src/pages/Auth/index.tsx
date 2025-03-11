@@ -1,7 +1,7 @@
 
 
 import { useState } from "react";
-import styles from "../../styles/Auth.module.css";
+import styles from "../../../styles/Auth.module.css";
 import Image from "next/image";
 
 const Auth = () => {
@@ -41,10 +41,10 @@ const Auth = () => {
           <form onSubmit={handleSubmit}>
             <h1>Create Account</h1>
             <div className={styles.socialIcons}>
-              <Image width={30} height={30} src="/img/google.png" alt="Google" />
-              <Image width={30} height={30} src="/img/facebook.png" alt="Facebook" />
-              <Image width={30} height={30} src="/img/instagram.png" alt="Instagram" />
-              <Image width={30} height={30} src="/img/twitter.png" alt="Twitter" />
+            <Image width={30} height={30} src="/images/google.png" alt="Google" />
+            <Image width={30} height={30} src="/images/facebook.png" alt="Facebook" />
+            <Image width={30} height={30} src="/images/instagram.png" alt="Instagram" />
+            <Image width={30} height={30} src="/images/twitter.png" alt="Twitter" />
             </div>
             <span>or use your email for registration</span>
             <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} className={styles.input} />
@@ -58,10 +58,10 @@ const Auth = () => {
           <form onSubmit={handleSubmit}>
             <h1>Sign In</h1>
             <div className={styles.socialIcons}>
-              <Image width={30} height={30} src="/google.png" alt="Google" />
-              <Image width={30} height={30} src="/facebook.png" alt="Facebook" />
-              <Image width={30} height={30} src="/instagram.png" alt="Instagram" />
-              <Image width={30} height={30} src="/twitter.png" alt="Twitter" />
+            <Image width={30} height={30} src="/images/google.png" alt="Google" />
+            <Image width={30} height={30} src="/images/facebook.png" alt="Facebook" />
+            <Image width={30} height={30} src="/images/instagram.png" alt="Instagram" />
+            <Image width={30} height={30} src="/images/twitter.png" alt="Twitter" />
             </div>
             <span>or use your email password</span>
             <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} className={styles.input} />
