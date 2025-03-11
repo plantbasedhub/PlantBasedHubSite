@@ -12,7 +12,6 @@ const Auth = () => {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
-  const [user, setUser] = useState<Models.User<Models.Preferences> | null>(null);
 
   const handleRegisterClick = () => setIsActive(true);
   const handleLoginClick = () => setIsActive(false);  
@@ -27,13 +26,16 @@ const Auth = () => {
         setMessage("Registro bem-sucedido! Agora faça login.");
       } else {
         // Login do usuário
-        const session = await account.createEmailPasswordSession(email, password);
-        const loggedInUser = await account.get();
-        setUser(loggedInUser);
+        await account.createEmailPasswordSession(email, password);
+        await account.get();
         setMessage("Login bem-sucedido!");
       }
-    } catch (error: any) {
-      setMessage(error.message || "Erro na autenticação");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setMessage(error.message);
+      } else {
+        setMessage("Erro na autenticação");
+      }
     }
   };
 
