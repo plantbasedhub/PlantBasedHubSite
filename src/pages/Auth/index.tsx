@@ -4,6 +4,8 @@ import Image from "next/image";
 import { account, ID } from "../../lib/appwrite";
 import { Models } from "appwrite";
 
+
+
 const Auth = () => {
   const [isActive, setIsActive] = useState(false);
   const [email, setEmail] = useState("");
