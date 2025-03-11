@@ -1,8 +1,8 @@
-
-
 import { useState } from "react";
 import styles from "../../../styles/Auth.module.css";
 import Image from "next/image";
+import { account, ID } from "../../lib/appwrite";
+import { Models } from "appwrite";
 
 const Auth = () => {
   const [isActive, setIsActive] = useState(false);
@@ -10,27 +10,28 @@ const Auth = () => {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
+  const [user, setUser] = useState<Models.User<Models.Preferences> | null>(null);
 
   const handleRegisterClick = () => setIsActive(true);
   const handleLoginClick = () => setIsActive(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const endpoint = isActive ? "/api/Auth/register" : "/api/Auth/login";
-    const body = isActive ? { name, email, password } : { email, password };
-
-    const res = await fetch(endpoint, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
-
-    const data = await res.json();
-    if (res.ok) {
-      if (!isActive) localStorage.setItem("token", data.token);
-      setMessage(isActive ? "Registro bem-sucedido!" : "Login bem-sucedido!");
-    } else {
-      setMessage(data.error || "Erro na autenticação");
+    
+    try {
+      if (isActive) {
+        // Registro de usuário no Appwrite
+        await account.create(ID.unique(), email, password, name);
+        setMessage("Registro bem-sucedido! Agora faça login.");
+      } else {
+        // Login do usuário
+        const session = await account.createEmailPasswordSession(email, password);
+        const loggedInUser = await account.get();
+        setUser(loggedInUser);
+        setMessage("Login bem-sucedido!");
+      }
+    } catch (error: any) {
+      setMessage(error.message || "Erro na autenticação");
     }
   };
 
@@ -41,10 +42,10 @@ const Auth = () => {
           <form onSubmit={handleSubmit}>
             <h1>Create Account</h1>
             <div className={styles.socialIcons}>
-            <Image width={30} height={30} src="/images/google.png" alt="Google" />
-            <Image width={30} height={30} src="/images/facebook.png" alt="Facebook" />
-            <Image width={30} height={30} src="/images/instagram.png" alt="Instagram" />
-            <Image width={30} height={30} src="/images/twitter.png" alt="Twitter" />
+              <Image width={30} height={30} src="/images/google.png" alt="Google" />
+              <Image width={30} height={30} src="/images/facebook.png" alt="Facebook" />
+              <Image width={30} height={30} src="/images/instagram.png" alt="Instagram" />
+              <Image width={30} height={30} src="/images/twitter.png" alt="Twitter" />
             </div>
             <span>or use your email for registration</span>
             <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} className={styles.input} />
@@ -58,10 +59,10 @@ const Auth = () => {
           <form onSubmit={handleSubmit}>
             <h1>Sign In</h1>
             <div className={styles.socialIcons}>
-            <Image width={30} height={30} src="/images/google.png" alt="Google" />
-            <Image width={30} height={30} src="/images/facebook.png" alt="Facebook" />
-            <Image width={30} height={30} src="/images/instagram.png" alt="Instagram" />
-            <Image width={30} height={30} src="/images/twitter.png" alt="Twitter" />
+              <Image width={30} height={30} src="/images/google.png" alt="Google" />
+              <Image width={30} height={30} src="/images/facebook.png" alt="Facebook" />
+              <Image width={30} height={30} src="/images/instagram.png" alt="Instagram" />
+              <Image width={30} height={30} src="/images/twitter.png" alt="Twitter" />
             </div>
             <span>or use your email password</span>
             <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} className={styles.input} />
