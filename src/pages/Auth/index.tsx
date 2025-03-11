@@ -13,7 +13,7 @@ const Auth = () => {
   const [user, setUser] = useState<Models.User<Models.Preferences> | null>(null);
 
   const handleRegisterClick = () => setIsActive(true);
-  const handleLoginClick = () => setIsActive(false);
+  const handleLoginClick = () => setIsActive(false);  
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
