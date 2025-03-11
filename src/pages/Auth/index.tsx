@@ -1,7 +1,7 @@
 
 
 import { useState } from "react";
-import styles from "../../styles/auth.module.css";
+import styles from "../../styles/Auth.module.css";
 import Image from "next/image";
 
 const Auth = () => {
@@ -16,7 +16,7 @@ const Auth = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const endpoint = isActive ? "/api/auth/register" : "/api/auth/login";
+    const endpoint = isActive ? "/api/Auth/register" : "/api/Auth/login";
     const body = isActive ? { name, email, password } : { email, password };
 
     const res = await fetch(endpoint, {
