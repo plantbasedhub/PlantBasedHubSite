@@ -2,7 +2,7 @@ import { useState } from "react";
 import styles from "../../../styles/Auth.module.css";
 import Image from "next/image";
 import { account, ID } from "../../lib/appwrite";
-import { Models } from "appwrite";
+
 
 
 
