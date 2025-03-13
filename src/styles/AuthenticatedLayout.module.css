@@ -1,0 +1,156 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #fafafa;
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1.5rem;
+  z-index: 100;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+.logo img {
+  border-radius: 8px;
+}
+
+.logo span {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #2d6a4f;
+}
+
+.logo span span {
+  color: #40916c;
+}
+
+.searchBar {
+  flex: 1;
+  max-width: 500px;
+  margin: 0 2rem;
+  position: relative;
+}
+
+.searchBar input {
+  width: 100%;
+  padding: 0.5rem 2.5rem 0.5rem 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.searchBar input:focus {
+  border-color: #2d6a4f;
+}
+
+.searchBar button {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  color: #666;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.cartButton {
+  font-size: 1.5rem;
+  color: #2d6a4f;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.profileButton {
+  text-decoration: none;
+}
+
+.avatar {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.main {
+  flex: 1;
+  margin-top: 60px;
+  margin-bottom: 60px;
+  width: 100%;
+}
+
+.bottomNav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+  z-index: 100;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.navItem {
+  font-size: 1.5rem;
+  color: #2d6a4f;
+  text-decoration: none;
+  padding: 0.5rem;
+  transition: transform 0.2s;
+}
+
+.navItem:hover {
+  transform: scale(1.1);
+}
+
+.spacer {
+  flex: 1;
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 0 1rem;
+  }
+
+  .logo span {
+    display: none;
+  }
+
+  .searchBar {
+    margin: 0 1rem;
+  }
+
+  .bottomNav {
+    padding: 0 1.5rem;
+  }
+} 
