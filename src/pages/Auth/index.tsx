@@ -43,7 +43,6 @@ const Auth = () => {
             <div className={styles.socialIcons}>
             <Image width={30} height={30} src="/images/google.png" alt="Google" />
             <Image width={30} height={30} src="/images/facebook.png" alt="Facebook" />
-            <Image width={30} height={30} src="/images/instagram.png" alt="Instagram" />
             <Image width={30} height={30} src="/images/twitter.png" alt="Twitter" />
             </div>
             <span>or use your email for registration</span>
@@ -60,7 +59,6 @@ const Auth = () => {
             <div className={styles.socialIcons}>
             <Image width={30} height={30} src="/images/google.png" alt="Google" />
             <Image width={30} height={30} src="/images/facebook.png" alt="Facebook" />
-            <Image width={30} height={30} src="/images/instagram.png" alt="Instagram" />
             <Image width={30} height={30} src="/images/twitter.png" alt="Twitter" />
             </div>
             <span>or use your email password</span>

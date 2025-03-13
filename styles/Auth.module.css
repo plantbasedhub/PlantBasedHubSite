@@ -1,4 +1,13 @@
 /* Estilos para o container principal */
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, #e2e2e2, #80AF81);
+}
+
 .container {
     background-color: #fff;
     border-radius: 30px;
@@ -14,7 +23,7 @@
     font-size: 14px;
     line-height: 20px;
     letter-spacing: 0.3px;
-    margin: 20px 0;
+    align-items: center;
 }
 
 .container span {
@@ -112,7 +121,10 @@
 }
 
 .socialIcons {
-    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Maior espaçamento entre ícones */
+    margin: 15px 0; /* Ajusta a posição vertical */
 }
 
 .socialIcons a {
@@ -169,7 +181,7 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    padding: 0 30px;
+    padding: 30px; /* Ajuste para espaçamento interno */
     text-align: center;
     top: 0;
     transform: translateX(0);
@@ -187,6 +199,15 @@
 .toggleRight {
     right: 0;
     transform: translateX(0);
+    align-items: center;
+}
+
+.togglePanel h1 {
+    margin-bottom: 20px; /* Aumenta o espaço abaixo do título */
+}
+
+.togglePanel p {
+    margin-top: 15px; /* Mantém o espaçamento acima do texto */
 }
 
 .containerActive .toggleRight {
