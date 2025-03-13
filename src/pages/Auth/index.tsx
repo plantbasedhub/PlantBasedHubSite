@@ -2,16 +2,16 @@ import { useState } from "react";
 import styles from "../../../styles/Auth.module.css";
 import Image from "next/image";
 import { account, ID } from "../../lib/appwrite";
-
-
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useRouter } from 'next/router';
 
 const Auth = () => {
+  const router = useRouter();
   const [isActive, setIsActive] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const [message, setMessage] = useState("");
 
   const handleRegisterClick = () => setIsActive(true);
   const handleLoginClick = () => setIsActive(false);  
@@ -23,24 +23,38 @@ const Auth = () => {
       if (isActive) {
         // Registro de usuário no Appwrite
         await account.create(ID.unique(), email, password, name);
-        setMessage("Registro bem-sucedido! Agora faça login.");
+        toast.success("Registro bem-sucedido! Agora faça login.");
+        setIsActive(false);
       } else {
         // Login do usuário
         await account.createEmailPasswordSession(email, password);
         await account.get();
-        setMessage("Login bem-sucedido!");
+        toast.success("Login bem-sucedido!");
+        router.push('/');
       }
     } catch (error: unknown) {
       if (error instanceof Error) {
-        setMessage(error.message);
+        toast.error(error.message);
       } else {
-        setMessage("Erro na autenticação");
+        toast.error("Erro na autenticação");
       }
     }
   };
 
   return (
     <div className={styles.authWrapper}>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <div className={`${styles.container} ${isActive ? styles.containerActive : ""}`} id="container">
         <div className={`${styles.formContainer} ${styles.signUp}`}>
           <form onSubmit={handleSubmit}>
@@ -55,7 +69,6 @@ const Auth = () => {
             <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} className={styles.input} />
             <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} className={styles.input} />
             <button type="submit" className={styles.button}>Sign Up</button>
-            <p>{message}</p>
           </form>
         </div>
         <div className={`${styles.formContainer} ${styles.signIn}`}>
@@ -71,7 +84,6 @@ const Auth = () => {
             <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} className={styles.input} />
             <a href="#" className={styles.link}>Forget Your Password?</a>
             <button type="submit" className={styles.button}>Sign In</button>
-            <p>{message}</p>
           </form>
         </div>
         <div className={styles.toggleContainer}>
