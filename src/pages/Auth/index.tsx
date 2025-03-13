@@ -1,8 +1,10 @@
-
-
 import { useState } from "react";
 import styles from "../../../styles/Auth.module.css";
 import Image from "next/image";
+import { account, ID } from "../../lib/appwrite";
+
+
+
 
 const Auth = () => {
   const [isActive, setIsActive] = useState(false);
@@ -12,25 +14,28 @@ const Auth = () => {
   const [message, setMessage] = useState("");
 
   const handleRegisterClick = () => setIsActive(true);
-  const handleLoginClick = () => setIsActive(false);
+  const handleLoginClick = () => setIsActive(false);  
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const endpoint = isActive ? "/api/Auth/register" : "/api/Auth/login";
-    const body = isActive ? { name, email, password } : { email, password };
-
-    const res = await fetch(endpoint, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
-
-    const data = await res.json();
-    if (res.ok) {
-      if (!isActive) localStorage.setItem("token", data.token);
-      setMessage(isActive ? "Registro bem-sucedido!" : "Login bem-sucedido!");
-    } else {
-      setMessage(data.error || "Erro na autenticação");
+    
+    try {
+      if (isActive) {
+        // Registro de usuário no Appwrite
+        await account.create(ID.unique(), email, password, name);
+        setMessage("Registro bem-sucedido! Agora faça login.");
+      } else {
+        // Login do usuário
+        await account.createEmailPasswordSession(email, password);
+        await account.get();
+        setMessage("Login bem-sucedido!");
+      }
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setMessage(error.message);
+      } else {
+        setMessage("Erro na autenticação");
+      }
     }
   };
 
