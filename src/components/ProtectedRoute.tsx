@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 
 interface ProtectedRouteProps {
@@ -7,20 +7,16 @@ interface ProtectedRouteProps {
 
 export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   const router = useRouter();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem('auth_token');
-    if (!token) {
-      router.replace('/Auth');
-    } else {
-      setIsAuthenticated(true);
+    // Verificar autenticação apenas no lado do cliente
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem('auth_token');
+      if (!token) {
+        router.replace('/Auth');
+      }
     }
-  }, [router]);
-
-  if (!isAuthenticated) {
-    return null;
-  }
+  }, []);
 
   return <>{children}</>;
 } 
