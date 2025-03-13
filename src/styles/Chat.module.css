@@ -1,0 +1,199 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #fafafa;
+}
+
+.chatContainer {
+  display: flex;
+  height: calc(100vh - 60px);
+  margin-top: 60px;
+}
+
+.conversationsList {
+  width: 350px;
+  border-right: 1px solid #dbdbdb;
+  background: white;
+  overflow-y: auto;
+}
+
+.conversation {
+  display: flex;
+  padding: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  align-items: center;
+}
+
+.conversation:hover {
+  background-color: #fafafa;
+}
+
+.conversation.active {
+  background-color: #efefef;
+}
+
+.conversationAvatar {
+  border-radius: 50%;
+  margin-right: 12px;
+}
+
+.conversationInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.conversationHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.conversationHeader h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #262626;
+}
+
+.conversationHeader span {
+  font-size: 12px;
+  color: #8e8e8e;
+}
+
+.conversationPreview {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.conversationPreview p {
+  margin: 0;
+  font-size: 14px;
+  color: #8e8e8e;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.unreadBadge {
+  background: #0095f6;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 12px;
+  min-width: 20px;
+  text-align: center;
+}
+
+.chatArea {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: white;
+}
+
+.messages {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.message {
+  max-width: 60%;
+  display: flex;
+}
+
+.message.sent {
+  align-self: flex-end;
+}
+
+.message.received {
+  align-self: flex-start;
+}
+
+.messageContent {
+  padding: 12px 16px;
+  border-radius: 18px;
+  position: relative;
+}
+
+.message.sent .messageContent {
+  background: #0095f6;
+  color: white;
+}
+
+.message.received .messageContent {
+  background: #efefef;
+  color: #262626;
+}
+
+.messageContent p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.messageTime {
+  font-size: 11px;
+  margin-top: 4px;
+  display: block;
+  opacity: 0.7;
+}
+
+.messageInput {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  border-top: 1px solid #dbdbdb;
+  gap: 12px;
+}
+
+.messageInput input {
+  flex: 1;
+  padding: 8px 16px;
+  border: 1px solid #dbdbdb;
+  border-radius: 22px;
+  font-size: 14px;
+}
+
+.messageInput input:focus {
+  outline: none;
+  border-color: #a8a8a8;
+}
+
+.attachButton,
+.sendButton {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 8px;
+}
+
+@media (max-width: 768px) {
+  .conversationsList {
+    width: 280px;
+  }
+}
+
+@media (max-width: 640px) {
+  .chatContainer {
+    flex-direction: column;
+  }
+
+  .conversationsList {
+    width: 100%;
+    height: auto;
+    max-height: 30vh;
+  }
+
+  .chatArea {
+    height: 70vh;
+  }
+} 

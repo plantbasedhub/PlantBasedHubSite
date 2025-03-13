@@ -16,7 +16,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
         router.replace('/Auth');
       }
     }
-  }, []);
+  }, [router]);
 
   return <>{children}</>;
 } 

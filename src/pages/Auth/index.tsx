@@ -30,7 +30,7 @@ const Auth = () => {
         await account.createEmailPasswordSession(email, password);
         await account.get();
         toast.success("Login bem-sucedido!");
-        router.push('/');
+        router.push('/feed');
       }
     } catch (error: unknown) {
       if (error instanceof Error) {

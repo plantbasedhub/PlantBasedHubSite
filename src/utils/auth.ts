@@ -2,11 +2,11 @@ import { NextRouter } from 'next/router';
 
 export const handleAuthNavigation = (router: NextRouter) => {
   const token = localStorage.getItem('auth_token');
-  if (token) {
-    router.replace('/feed');
-    return true;
+  if (!token) {
+    router.replace('/Auth');
+    return false;
   }
-  return false;
+  return true;
 };
 
 export const checkAuth = () => {

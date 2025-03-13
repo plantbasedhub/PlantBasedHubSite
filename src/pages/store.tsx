@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import styles from '../../styles/Store.module.css';
-import ProtectedRoute from '../components/ProtectedRoute';
-import AuthenticatedLayout from '../components/AuthenticatedLayout';
 
 export default function Store() {
   const [activeCategory, setActiveCategory] = useState('All Products');
@@ -54,47 +52,43 @@ export default function Store() {
     : products.filter(product => product.category === activeCategory);
 
   return (
-    <ProtectedRoute>
-      <AuthenticatedLayout>
-        <div className={styles.storeContainer}>
-          <div className={styles.categories}>
-            {categories.map(category => (
-              <button
-                key={category}
-                className={`${styles.categoryButton} ${activeCategory === category ? styles.active : ''}`}
-                onClick={() => setActiveCategory(category)}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
+    <div className={styles.storeContainer}>
+      <div className={styles.categories}>
+        {categories.map(category => (
+          <button
+            key={category}
+            className={`${styles.categoryButton} ${activeCategory === category ? styles.active : ''}`}
+            onClick={() => setActiveCategory(category)}
+          >
+            {category}
+          </button>
+        ))}
+      </div>
 
-          <div className={styles.productsGrid}>
-            {filteredProducts.map(product => (
-              <div key={product.id} className={styles.productCard}>
-                <div className={styles.productImage}>
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    width={200}
-                    height={200}
-                  />
-                </div>
-                <div className={styles.productInfo}>
-                  <h3>{product.name}</h3>
-                  <p>{product.description}</p>
-                  <div className={styles.productFooter}>
-                    <span className={styles.price}>${product.price}</span>
-                    <button className={styles.addToCartButton}>
-                      Add to Cart
-                    </button>
-                  </div>
-                </div>
+      <div className={styles.productsGrid}>
+        {filteredProducts.map(product => (
+          <div key={product.id} className={styles.productCard}>
+            <div className={styles.productImage}>
+              <Image
+                src={product.image}
+                alt={product.name}
+                width={200}
+                height={200}
+              />
+            </div>
+            <div className={styles.productInfo}>
+              <h3>{product.name}</h3>
+              <p>{product.description}</p>
+              <div className={styles.productFooter}>
+                <span className={styles.price}>${product.price}</span>
+                <button className={styles.addToCartButton}>
+                  Add to Cart
+                </button>
               </div>
-            ))}
+            </div>
           </div>
-        </div>
-      </AuthenticatedLayout>
-    </ProtectedRoute>
+        ))}
+      </div>
+    </div>
   );
 } 

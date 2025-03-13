@@ -1,0 +1,119 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  z-index: 1000;
+}
+
+.popover {
+  position: absolute;
+  top: 60px;
+  right: calc(50% - 487px);
+  width: 400px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  animation: slideDown 0.2s ease-out;
+}
+
+.header {
+  padding: 16px;
+  border-bottom: 1px solid #dbdbdb;
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #262626;
+}
+
+.content {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.notification {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid #dbdbdb;
+  transition: background-color 0.2s;
+}
+
+.notification:hover {
+  background-color: #fafafa;
+}
+
+.notificationAvatar {
+  margin-right: 12px;
+}
+
+.avatar {
+  border-radius: 50%;
+}
+
+.notificationContent {
+  flex: 1;
+}
+
+.notificationContent p {
+  margin: 0;
+  font-size: 14px;
+  color: #262626;
+}
+
+.timestamp {
+  font-size: 12px;
+  color: #8e8e8e;
+}
+
+.followButton {
+  padding: 7px 16px;
+  background: #0095f6;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.followButton:hover {
+  background: #0081d6;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 935px) {
+  .popover {
+    right: 20px;
+    width: calc(100% - 40px);
+    max-width: 400px;
+  }
+}
+
+@media (max-width: 614px) {
+  .popover {
+    right: 0;
+    width: 100%;
+    border-radius: 0;
+  }
+} 
