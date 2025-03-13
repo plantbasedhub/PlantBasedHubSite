@@ -7,7 +7,6 @@ import NotificationsPopover from '../components/NotificationsPopover';
 
 function ProfileDropdown({ isOpen, onClose, user }) {
   const dropdownRef = useRef(null);
-  const router = useRouter();
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -22,11 +21,6 @@ function ProfileDropdown({ isOpen, onClose, user }) {
 
   if (!isOpen) return null;
 
-  const handleProfileClick = () => {
-    router.push('/profile');
-    onClose();
-  };
-
   return (
     <div className={styles.profileDropdown} ref={dropdownRef}>
       <div className={styles.dropdownHeader}>
@@ -40,15 +34,15 @@ function ProfileDropdown({ isOpen, onClose, user }) {
         <span>{user.name}</span>
       </div>
       <div className={styles.dropdownContent}>
-        <button onClick={handleProfileClick} className={styles.dropdownItem}>
+        <Link href="/profile" className={styles.dropdownItem} onClick={onClose}>
           <span>👤</span> Profile
-        </button>
-        <Link href="/settings" className={styles.dropdownItem}>
+        </Link>
+        <Link href="/settings" className={styles.dropdownItem} onClick={onClose}>
           <span>⚙️</span> Settings
         </Link>
         <button className={styles.dropdownItem} onClick={() => {
           localStorage.removeItem('auth_token');
-          window.location.href = '/Auth';
+          window.location.href = '/';
         }}>
           <span>🚪</span> Logout
         </button>
@@ -58,16 +52,43 @@ function ProfileDropdown({ isOpen, onClose, user }) {
 }
 
 export default function Feed() {
-  const [activeTab, setActiveTab] = useState('home');
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const router = useRouter();
 
-  // Mock user data - replace with real user data from your auth system
+  // Mock user data
   const user = {
     name: 'John Doe',
-    avatar: '/avatar1.jpg'
+    avatar: '/images/default-avatar.jpg'
   };
+
+  // Mock stories data
+  const stories = [
+    { id: 1, user: 'Sarah', avatar: '/images/default-avatar.jpg' },
+    { id: 2, user: 'Mike', avatar: '/images/default-avatar.jpg' },
+    { id: 3, user: 'Emma', avatar: '/images/default-avatar.jpg' },
+    { id: 4, user: 'John', avatar: '/images/default-avatar.jpg' },
+  ];
+
+  // Mock posts data
+  const posts = [
+    {
+      id: 1,
+      user: { name: 'Sarah', avatar: '/images/default-avatar.jpg' },
+      image: '/images/default-post.jpg',
+      likes: 234,
+      caption: 'Delicious vegan breakfast bowl! 🥗',
+      timestamp: '2h',
+    },
+    {
+      id: 2,
+      user: { name: 'Mike', avatar: '/images/default-avatar.jpg' },
+      image: '/images/default-post.jpg',
+      likes: 156,
+      caption: 'New plant-based recipe coming soon! 🌱',
+      timestamp: '4h',
+    },
+  ];
 
   return (
     <div className={styles.container}>
@@ -86,18 +107,19 @@ export default function Feed() {
               <span>PlantBasedHub</span>
             </Link>
           </div>
+          
           <div className={styles.headerRight}>
             <button 
               className={styles.notificationButton}
               onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
             >
-              🔔
+              <span>🔔</span>
             </button>
             <Link href="/chat">
-              <button className={styles.messageButton}>💬</button>
+              <button className={styles.messageButton}><span>✉️</span></button>
             </Link>
             <Link href="/store">
-              <button className={styles.cartButton}>🛒</button>
+              <button className={styles.cartButton}><span>🛍️</span></button>
             </Link>
             <div className={styles.profileContainer}>
               <button 
@@ -122,16 +144,7 @@ export default function Feed() {
         </div>
       </header>
 
-      <NotificationsPopover 
-        isOpen={isNotificationsOpen}
-        onClose={() => setIsNotificationsOpen(false)}
-      />
-
       <main className={styles.main}>
-        <aside className={styles.leftSidebar}>
-          {/* Left sidebar content */}
-        </aside>
-
         <div className={styles.mainFeed}>
           <div className={styles.storiesContainer}>
             <div className={styles.stories}>
@@ -139,43 +152,43 @@ export default function Feed() {
                 <button className={styles.addStoryButton}>+</button>
                 <span>Add Story</span>
               </div>
-              {[1, 2, 3, 4, 5].map((story) => (
-                <div key={story} className={styles.story}>
+              {stories.map(story => (
+                <div key={story.id} className={styles.story}>
                   <div className={styles.storyRing}>
                     <Image
-                      src={`/story${story}.jpg`}
-                      alt={`Story ${story}`}
+                      src={story.avatar}
+                      alt={story.user}
                       width={56}
                       height={56}
                       className={styles.storyAvatar}
                     />
                   </div>
-                  <span>username{story}</span>
+                  <span>{story.user}</span>
                 </div>
               ))}
             </div>
           </div>
 
           <div className={styles.posts}>
-            {[1, 2, 3].map((post) => (
-              <div key={post} className={styles.post}>
+            {posts.map(post => (
+              <div key={post.id} className={styles.post}>
                 <div className={styles.postHeader}>
                   <div className={styles.postUser}>
                     <Image
-                      src={`/avatar${post}.jpg`}
-                      alt="User Avatar"
+                      src={post.user.avatar}
+                      alt={post.user.name}
                       width={32}
                       height={32}
                       className={styles.postAvatar}
                     />
-                    <span>username{post}</span>
+                    <span>{post.user.name}</span>
                   </div>
-                  <button className={styles.moreButton}>•••</button>
+                  <button className={styles.moreButton}>⋯</button>
                 </div>
                 <div className={styles.postImage}>
                   <Image
-                    src={`/post${post}.jpg`}
-                    alt={`Post ${post}`}
+                    src={post.image}
+                    alt="Post content"
                     width={470}
                     height={470}
                     className={styles.postContent}
@@ -183,32 +196,31 @@ export default function Feed() {
                 </div>
                 <div className={styles.postActions}>
                   <div className={styles.postActionsLeft}>
-                    <button>❤️</button>
-                    <button>💬</button>
-                    <button>🔄</button>
+                    <button>♥️</button>
+                    <button>✉️</button>
+                    <button>📤</button>
                   </div>
                   <button>🔖</button>
                 </div>
                 <div className={styles.postLikes}>
-                  <p><strong>123 likes</strong></p>
+                  {post.likes} likes
                 </div>
                 <div className={styles.postCaption}>
-                  <p>
-                    <strong>username{post}</strong> This is a sample caption for post {post}...
-                  </p>
+                  <span>{post.user.name}</span> {post.caption}
                 </div>
                 <div className={styles.postInfo}>
-                  <p className={styles.timestamp}>2 HOURS AGO</p>
+                  <p className={styles.timestamp}>{post.timestamp}</p>
                 </div>
               </div>
             ))}
           </div>
         </div>
-
-        <aside className={styles.rightSidebar}>
-          {/* Right sidebar content */}
-        </aside>
       </main>
+
+      <NotificationsPopover 
+        isOpen={isNotificationsOpen}
+        onClose={() => setIsNotificationsOpen(false)}
+      />
     </div>
   );
 } 
