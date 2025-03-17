@@ -4,8 +4,17 @@ import { Models } from 'appwrite';
 let lastLoginAttempt = 0;
 const LOGIN_COOLDOWN = 2000; // 2 segundos de cooldown entre tentativas
 
+export async function checkSession(): Promise<boolean> {
+  try {
+    const session = await account.getSession('current');
+    return !!session;
+  } catch (error) {
+    return false;
+  }
+}
+
 export function getUserAvatar(user: Models.User<Models.Preferences> | null): string {
-  if (!user) return '/images/default-avatar.jpg';
+  if (!user) return '/images/avatar-default.svg';
   
   // Se o usuário tiver uma imagem de perfil, retorna ela
   if (user.prefs?.avatar) {
@@ -13,7 +22,7 @@ export function getUserAvatar(user: Models.User<Models.Preferences> | null): str
   }
   
   // Se não tiver, retorna a imagem padrão
-  return '/images/default-avatar.svg';
+  return '/images/avatar-default.svg';
 }
 
 export async function login(email: string, password: string): Promise<boolean> {
@@ -52,7 +61,8 @@ export async function register(email: string, password: string, name: string): P
     
     lastLoginAttempt = Date.now();
     await account.create(ID.unique(), email, password, name);
-    return await login(email, password);
+    const promise = account.createVerification('https://plantbasedhub.store/verify');
+
   } catch (error) {
     console.error('Erro no registro:', error);
     if (error instanceof Error) {
@@ -66,16 +76,22 @@ export async function register(email: string, password: string, name: string): P
 
 export async function logout(): Promise<void> {
   try {
-    await account.deleteSession('current');
+    const hasSession = await checkSession();
+    if (hasSession) {
+      await account.deleteSession('current');
+    }
     // Força uma atualização da página para garantir que o cookie seja removido
     window.location.href = '/';
   } catch (error) {
     console.error('Erro no logout:', error);
+    window.location.href = '/';
   }
 }
 
 export async function getCurrentUser(): Promise<Models.User<Models.Preferences> | null> {
   try {
+    const hasSession = await checkSession();
+    if (!hasSession) return null;
     return await account.get();
   } catch (error) {
     console.error('Erro ao obter usuário:', error);

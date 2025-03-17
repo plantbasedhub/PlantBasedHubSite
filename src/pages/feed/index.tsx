@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import styles from '../../../styles/Feed.module.css';
 import NotificationsPopover from '../../components/NotificationsPopover';
 import { withAuth } from '../../lib/withAuth';
-import { getCurrentUser, getUserAvatar } from '../../lib/auth';
+import { getCurrentUser, getUserAvatar, logout, checkSession } from '../../lib/auth';
 
 function ProfileDropdown({ isOpen, onClose, user }) {
   const dropdownRef = useRef(null);
@@ -27,9 +27,8 @@ function ProfileDropdown({ isOpen, onClose, user }) {
     router.push(path);
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('auth_token');
-    router.push('/');
+  const handleLogout = async () => {
+    await logout();
   };
 
   if (!isOpen) return null;
@@ -65,29 +64,46 @@ const Feed = () => {
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
     const loadUser = async () => {
-      const currentUser = await getCurrentUser();
-      setUser(currentUser);
+      try {
+        const hasSession = await checkSession();
+        if (!hasSession) {
+          router.push('/auth');
+          return;
+        }
+        const currentUser = await getCurrentUser();
+        setUser(currentUser);
+      } catch (error) {
+        console.error('Erro ao carregar usuário:', error);
+        router.push('/auth');
+      } finally {
+        setIsLoading(false);
+      }
     };
     loadUser();
-  }, []);
+  }, [router]);
+
+  if (isLoading) {
+    return <div>Carregando...</div>;
+  }
 
   // Mock stories data
   const stories = [
-    { id: 1, user: 'Sarah', avatar: '/images/default-avatar.svg' },
-    { id: 2, user: 'Mike', avatar: '/images/default-avatar.svg' },
-    { id: 3, user: 'Emma', avatar: '/images/default-avatar.svg' },
-    { id: 4, user: 'John', avatar: '/images/default-avatar.svg' },
+    { id: 1, user: 'Sarah', avatar: '/images/avatar_default.svg' },
+    { id: 2, user: 'Mike', avatar: '/images/avatar_default.svg' },
+    { id: 3, user: 'Emma', avatar: '/images/avatar_default.svg' },
+    { id: 4, user: 'John', avatar: '/images/avatar_default.svg' },
   ];
 
   // Mock posts data
   const posts = [
     {
       id: 1,
-      user: { name: 'Sarah', avatar: '/images/default-avatar.jpg' },
+      user: { name: 'Sarah', avatar: '/images/avatar_default.svg' },
       image: '/images/default-post.jpg',
       likes: 234,
       caption: 'Delicious vegan breakfast bowl! 🥗',
@@ -95,8 +111,8 @@ const Feed = () => {
     },
     {
       id: 2,
-      user: { name: 'Mike', avatar: '/images/default-avatar.jpg' },
-      image: '/images/default-post.jpg',
+      user: { name: 'Mike', avatar: '/images/avatar_default.svg' },
+      image: '/images/default-post.svg',
       likes: 156,
       caption: 'New plant-based recipe coming soon! 🌱',
       timestamp: '4h',
