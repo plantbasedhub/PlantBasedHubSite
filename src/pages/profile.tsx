@@ -7,7 +7,15 @@ import { useRouter } from 'next/router';
 import { Models } from 'appwrite';
 import { toast } from 'react-toastify';
 
-function ProfileDropdown({ isOpen, onClose, user }) {
+interface Post {
+  id: string;
+  imageUrl: string;
+  description: string;
+  likes: number;
+  comments: number;
+}
+
+function ProfileDropdown({ isOpen, onClose, user }: { isOpen: boolean; onClose: () => void; user: Models.User<Models.Preferences> | null }) {
   const dropdownRef = useRef(null);
   const router = useRouter();
 
@@ -38,13 +46,13 @@ function ProfileDropdown({ isOpen, onClose, user }) {
     <div className={styles.profileDropdown} ref={dropdownRef}>
       <div className={styles.dropdownHeader}>
         <Image
-          src={user.prefs?.avatarUrl || '/images/default-avatar.jpg'}
-          alt={user.name || 'User'}
+          src={user?.prefs?.avatarUrl || '/images/default-avatar.jpg'}
+          alt={user?.name || 'User'}
           width={32}
           height={32}
           className={styles.dropdownAvatar}
         />
-        <span>{user.name || 'User'}</span>
+        <span>{user?.name || 'User'}</span>
       </div>
       <div className={styles.dropdownContent}>
         <button className={styles.dropdownItem} onClick={() => handleNavigation('/profile')}>
@@ -255,7 +263,7 @@ export default function Profile() {
           </div>
 
           <div className={styles.postsGrid}>
-            {(user.prefs?.posts || []).map((post: any) => (
+            {(user.prefs?.posts || []).map((post: Post) => (
               <div key={post.id} className={styles.postCard}>
                 <Image
                   src={post.imageUrl || '/images/default-post.jpg'}

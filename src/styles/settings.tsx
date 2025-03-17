@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { checkSession } from '../lib/auth';
-
-
-import styles from '../../styles/Settings.module.css';
+import styles from './Settings.module.css';
 
 export default function Settings() {
   const [isLoading, setIsLoading] = useState(true);

@@ -1,28 +1,21 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { account } from './appwrite';
+import { checkSession } from './auth';
 
-export function withAuth<P extends object>(WrappedComponent: React.ComponentType<P>) {
+export function withAuth<P extends object>(Component: React.ComponentType<P>) {
   return function WithAuthComponent(props: P) {
     const router = useRouter();
 
     useEffect(() => {
       const checkAuth = async () => {
-        try {
-          // Verifica se existe uma sessão ativa
-          const session = await account.getSession('current');
-          if (!session) {
-            router.push('/auth');
-            return;
-          }
-        } catch (error) {
+        const hasSession = await checkSession();
+        if (!hasSession) {
           router.push('/auth');
         }
       };
-
       checkAuth();
     }, [router]);
 
-    return <WrappedComponent {...props} />;
+    return <Component {...props} />;
   };
 } 

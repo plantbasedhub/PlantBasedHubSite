@@ -8,7 +8,7 @@ export async function checkSession(): Promise<boolean> {
   try {
     const session = await account.getSession('current');
     return !!session;
-  } catch (error) {
+  } catch {
     return false;
   }
 }
@@ -61,8 +61,8 @@ export async function register(email: string, password: string, name: string): P
     
     lastLoginAttempt = Date.now();
     await account.create(ID.unique(), email, password, name);
-    const promise = account.createVerification('https://plantbasedhub.store/verify');
-
+    await account.createVerification('https://plantbasedhub.store/verify');
+    return await login(email, password);
   } catch (error) {
     console.error('Erro no registro:', error);
     if (error instanceof Error) {
@@ -82,8 +82,7 @@ export async function logout(): Promise<void> {
     }
     // Força uma atualização da página para garantir que o cookie seja removido
     window.location.href = '/';
-  } catch (error) {
-    console.error('Erro no logout:', error);
+  } catch {
     window.location.href = '/';
   }
 }
@@ -93,8 +92,7 @@ export async function getCurrentUser(): Promise<Models.User<Models.Preferences> 
     const hasSession = await checkSession();
     if (!hasSession) return null;
     return await account.get();
-  } catch (error) {
-    console.error('Erro ao obter usuário:', error);
+  } catch {
     return null;
   }
 } 

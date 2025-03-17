@@ -3,7 +3,7 @@ import Link from "next/link";
 import styles from "../../styles/Home.module.css";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { account } from "../lib/appwrite";
+import { getCurrentUser } from '../lib/auth';
 
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -11,21 +11,15 @@ export default function Home() {
 
   useEffect(() => {
     const checkAuth = async () => {
-      try {
-        const session = await account.getSession('current');
-        if (session) {
-          router.replace('/feed');
-        }
-      } catch (error) {
-        // Usuário não está logado, não faz nada
+      const user = await getCurrentUser();
+      if (user) {
+        router.push('/feed');
       }
     };
-
     checkAuth();
   }, [router]);
 
-  const handleAuthClick = (e: React.MouseEvent) => {
-    e.preventDefault();
+  const handleAuthClick = () => {
     router.push('/auth');
   };
 
@@ -60,7 +54,7 @@ export default function Home() {
           <h2>PlantBased Hub - Vegan Worldwide App</h2>
           <h3>Welcome to PlantBased Hub – Your Gateway to a Sustainable Lifestyle!</h3>
           <p className={styles.description}>
-            PlantBased Hub is more than just an app – it's a thriving community
+            PlantBased Hub is more than just an app &ndash; it&apos;s a thriving community
             for vegans and eco-enthusiasts. Share delicious recipes, connect
             with like-minded individuals, shop sustainably, and inspire change.
             Together, we create a better future.

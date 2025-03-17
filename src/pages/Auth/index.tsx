@@ -13,6 +13,8 @@ const Auth = () => {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -24,8 +26,10 @@ const Auth = () => {
             router.push('/feed');
           }, 2);
         }
-      } catch (error) {
+      } catch {
         // Usuário não está logado, não faz nada
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -38,6 +42,7 @@ const Auth = () => {
     if (isSubmitting) return;
     
     setIsSubmitting(true);
+    setError('');
     
     try {
       if (isActive) {
@@ -46,7 +51,7 @@ const Auth = () => {
           toast.success("Registro bem-sucedido!");
           router.push('/feed');
         } else {
-          toast.error("Erro ao criar conta");
+          setError('Erro ao criar conta. Tente novamente.');
         }
       } else {
         const success = await login(email, password);
@@ -54,19 +59,23 @@ const Auth = () => {
           toast.success("Login bem-sucedido!");
           router.push('/feed');
         } else {
-          toast.error("Email ou senha inválidos");
+          setError('Email ou senha inválidos');
         }
       }
-    } catch (error) {
-      if (error instanceof Error) {
-        toast.error(error.message);
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
       } else {
-        toast.error("Erro na autenticação");
+        setError('Ocorreu um erro. Tente novamente.');
       }
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  if (isLoading) {
+    return <div>Carregando...</div>;
+  }
 
   return (
     <div className={styles.authWrapper}>
@@ -116,6 +125,7 @@ const Auth = () => {
               className={styles.input}
               disabled={isSubmitting}
             />
+            {error && <div className={styles.error}>{error}</div>}
             <button 
               type="submit" 
               className={styles.button}
@@ -151,6 +161,7 @@ const Auth = () => {
               disabled={isSubmitting}
             />
             <a href="#" className={styles.link}>Forget Your Password?</a>
+            {error && <div className={styles.error}>{error}</div>}
             <button 
               type="submit" 
               className={styles.button}
