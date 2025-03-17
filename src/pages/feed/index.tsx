@@ -2,8 +2,10 @@ import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import styles from '../../styles/Feed.module.css';
-import NotificationsPopover from '../components/NotificationsPopover';
+import styles from '../../../styles/Feed.module.css';
+import NotificationsPopover from '../../components/NotificationsPopover';
+import { withAuth } from '../../lib/withAuth';
+import { getCurrentUser, getUserAvatar } from '../../lib/auth';
 
 function ProfileDropdown({ isOpen, onClose, user }) {
   const dropdownRef = useRef(null);
@@ -25,13 +27,13 @@ function ProfileDropdown({ isOpen, onClose, user }) {
     <div className={styles.profileDropdown} ref={dropdownRef}>
       <div className={styles.dropdownHeader}>
         <Image
-          src={user.avatar}
-          alt={user.name}
+          src={getUserAvatar(user)}
+          alt={user?.name || 'Usuário'}
           width={32}
           height={32}
           className={styles.dropdownAvatar}
         />
-        <span>{user.name}</span>
+        <span>{user?.name || 'Usuário'}</span>
       </div>
       <div className={styles.dropdownContent}>
         <Link href="/profile" className={styles.dropdownItem} onClick={onClose}>
@@ -51,23 +53,26 @@ function ProfileDropdown({ isOpen, onClose, user }) {
   );
 }
 
-export default function Feed() {
+const Feed = () => {
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [user, setUser] = useState(null);
   const router = useRouter();
 
-  // Mock user data
-  const user = {
-    name: 'John Doe',
-    avatar: '/images/default-avatar.jpg'
-  };
+  useEffect(() => {
+    const loadUser = async () => {
+      const currentUser = await getCurrentUser();
+      setUser(currentUser);
+    };
+    loadUser();
+  }, []);
 
   // Mock stories data
   const stories = [
-    { id: 1, user: 'Sarah', avatar: '/images/default-avatar.jpg' },
-    { id: 2, user: 'Mike', avatar: '/images/default-avatar.jpg' },
-    { id: 3, user: 'Emma', avatar: '/images/default-avatar.jpg' },
-    { id: 4, user: 'John', avatar: '/images/default-avatar.jpg' },
+    { id: 1, user: 'Sarah', avatar: '/images/default-avatar.svg' },
+    { id: 2, user: 'Mike', avatar: '/images/default-avatar.svg' },
+    { id: 3, user: 'Emma', avatar: '/images/default-avatar.svg' },
+    { id: 4, user: 'John', avatar: '/images/default-avatar.svg' },
   ];
 
   // Mock posts data
@@ -127,7 +132,7 @@ export default function Feed() {
                 onClick={() => setIsProfileOpen(!isProfileOpen)}
               >
                 <Image
-                  src={user.avatar}
+                  src={getUserAvatar(user)}
                   alt="Profile"
                   width={32}
                   height={32}
@@ -223,4 +228,6 @@ export default function Feed() {
       />
     </div>
   );
-} 
+};
+
+export default withAuth(Feed); 

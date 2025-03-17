@@ -3,26 +3,30 @@ import Link from "next/link";
 import styles from "../../styles/Home.module.css";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { account } from "../lib/appwrite";
 
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem('auth_token');
-    if (token) {
-      router.replace('/feed');
-    }
+    const checkAuth = async () => {
+      try {
+        const session = await account.getSession('current');
+        if (session) {
+          router.replace('/feed');
+        }
+      } catch (error) {
+        // Usuário não está logado, não faz nada
+      }
+    };
+
+    checkAuth();
   }, [router]);
 
   const handleAuthClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    const token = localStorage.getItem('auth_token');
-    if (token) {
-      router.push('/feed');
-    } else {
-      router.push('/Auth');
-    }
+    router.push('/auth');
   };
 
   return (

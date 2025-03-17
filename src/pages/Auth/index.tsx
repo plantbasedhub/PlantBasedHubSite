@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "../../../styles/Auth.module.css";
 import Image from "next/image";
-import { account, ID } from "../../lib/appwrite";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/router';
+import { login, register, getCurrentUser } from '../../lib/auth';
 
 const Auth = () => {
   const router = useRouter();
@@ -12,33 +12,59 @@ const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleRegisterClick = () => setIsActive(true);
-  const handleLoginClick = () => setIsActive(false);  
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const user = await getCurrentUser();
+        if (user) {
+          toast.info("Você já está logado!");
+          setTimeout(() => {
+            router.push('/feed');
+          }, 2);
+        }
+      } catch (error) {
+        // Usuário não está logado, não faz nada
+      }
+    };
+
+    checkAuth();
+  }, [router]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
+    if (isSubmitting) return;
+    
+    setIsSubmitting(true);
+    
     try {
       if (isActive) {
-        // Registro de usuário no Appwrite
-        await account.create(ID.unique(), email, password, name);
-        toast.success("Registro bem-sucedido! Agora faça login.");
-        setIsActive(false);
+        const success = await register(email, password, name);
+        if (success) {
+          toast.success("Registro bem-sucedido!");
+          router.push('/feed');
+        } else {
+          toast.error("Erro ao criar conta");
+        }
       } else {
-        // Login do usuário
-        const session = await account.createEmailPasswordSession(email, password);
-        localStorage.setItem('auth_token', session.$id);
-        await account.get();
-        toast.success("Login bem-sucedido!");
-        router.push('/feed');
+        const success = await login(email, password);
+        if (success) {
+          toast.success("Login bem-sucedido!");
+          router.push('/feed');
+        } else {
+          toast.error("Email ou senha inválidos");
+        }
       }
-    } catch (error: unknown) {
+    } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);
       } else {
         toast.error("Erro na autenticação");
       }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -59,45 +85,104 @@ const Auth = () => {
       <div className={`${styles.container} ${isActive ? styles.containerActive : ""}`} id="container">
         <div className={`${styles.formContainer} ${styles.signUp}`}>
           <form onSubmit={handleSubmit}>
-            <h1 className={styles.title}>Create Account</h1>
+            <h1>Create Account</h1>
             <div className={styles.socialIcons}>
-            <Image width={30} height={30} src="/images/google.png" alt="Google" />
-            <Image width={30} height={30} src="/images/facebook.png" alt="Facebook" />
-            <Image width={30} height={30} src="/images/twitter.png" alt="Twitter" />
+              <Image width={30} height={30} src="/images/google.png" alt="Google" />
+              <Image width={30} height={30} src="/images/facebook.png" alt="Facebook" />
+              <Image width={30} height={30} src="/images/twitter.png" alt="Twitter" />
             </div>
-            <span className={styles.subtitle}>or use your email for registration</span>
-            <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} className={styles.input} />
-            <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} className={styles.input} />
-            <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} className={styles.input} />
-            <button type="submit" className={styles.button}>Sign Up</button>
+            <span>or use your email for registration</span>
+            <input 
+              type="text" 
+              placeholder="Name" 
+              value={name} 
+              onChange={(e) => setName(e.target.value)} 
+              className={styles.input}
+              disabled={isSubmitting}
+            />
+            <input 
+              type="email" 
+              placeholder="Email" 
+              value={email} 
+              onChange={(e) => setEmail(e.target.value)} 
+              className={styles.input}
+              disabled={isSubmitting}
+            />
+            <input 
+              type="password" 
+              placeholder="Password" 
+              value={password} 
+              onChange={(e) => setPassword(e.target.value)} 
+              className={styles.input}
+              disabled={isSubmitting}
+            />
+            <button 
+              type="submit" 
+              className={styles.button}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Processando...' : 'Sign Up'}
+            </button>
           </form>
         </div>
         <div className={`${styles.formContainer} ${styles.signIn}`}>
           <form onSubmit={handleSubmit}>
-            <h1 className={styles.title}>Sign In</h1>
+            <h1>Sign In</h1>
             <div className={styles.socialIcons}>
-            <Image width={30} height={30} src="/images/google.png" alt="Google" />
-            <Image width={30} height={30} src="/images/facebook.png" alt="Facebook" />
-            <Image width={30} height={30} src="/images/twitter.png" alt="Twitter" />
+              <Image width={30} height={30} src="/images/google.png" alt="Google" />
+              <Image width={30} height={30} src="/images/facebook.png" alt="Facebook" />
+              <Image width={30} height={30} src="/images/twitter.png" alt="Twitter" />
             </div>
-            <span className={styles.subtitle}>or use your email password</span>
-            <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} className={styles.input} />
-            <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} className={styles.input} />
+            <span>or use your email password</span>
+            <input 
+              type="email" 
+              placeholder="Email" 
+              value={email} 
+              onChange={(e) => setEmail(e.target.value)} 
+              className={styles.input}
+              disabled={isSubmitting}
+            />
+            <input 
+              type="password" 
+              placeholder="Password" 
+              value={password} 
+              onChange={(e) => setPassword(e.target.value)} 
+              className={styles.input}
+              disabled={isSubmitting}
+            />
             <a href="#" className={styles.link}>Forget Your Password?</a>
-            <button type="submit" className={styles.button}>Sign In</button>
+            <button 
+              type="submit" 
+              className={styles.button}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Processando...' : 'Sign In'}
+            </button>
           </form>
         </div>
         <div className={styles.toggleContainer}>
           <div className={styles.toggle}>
             <div className={`${styles.togglePanel} ${styles.toggleLeft}`}>
-              <h1 className={styles.title}>Welcome Back!</h1>
-              <p className={styles.toggleText}>Enter your personal details to use all of site features</p>
-              <button className={`${styles.button} ${styles.hidden}`} onClick={handleLoginClick}>Sign In</button>
+              <h1>Welcome Back!</h1>
+              <p>Enter your personal details to use all of site features</p>
+              <button 
+                className={`${styles.button} ${styles.hidden}`} 
+                onClick={() => setIsActive(false)}
+                disabled={isSubmitting}
+              >
+                Sign In
+              </button>
             </div>
             <div className={`${styles.togglePanel} ${styles.toggleRight}`}>
-              <h1 className={styles.title}>Hello, Friend!</h1>
-              <p className={styles.toggleText}>Register with your personal details to use all of site features</p>
-              <button className={`${styles.button} ${styles.hidden}`} onClick={handleRegisterClick}>Sign Up</button>
+              <h1>Hello, Friend!</h1>
+              <p>Register with your personal details to use all of site features</p>
+              <button 
+                className={`${styles.button} ${styles.hidden}`} 
+                onClick={() => setIsActive(true)}
+                disabled={isSubmitting}
+              >
+                Sign Up
+              </button>
             </div>
           </div>
         </div>
