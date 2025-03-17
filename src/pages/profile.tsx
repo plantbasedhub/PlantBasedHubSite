@@ -6,6 +6,7 @@ import { account } from '../lib/appwrite';
 import { useRouter } from 'next/router';
 import { Models } from 'appwrite';
 import { toast } from 'react-toastify';
+import { FiHome, FiSearch, FiHeart, FiUser, FiMenu } from 'react-icons/fi';
 
 interface Post {
   id: string;
@@ -140,130 +141,116 @@ export default function Profile() {
 
   return (
     <div className={styles.container}>
-      <header className={styles.header}>
-        <div className={styles.headerContent}>
-          <div className={styles.headerLeft}>
-            <Link href="/feed" className={styles.logo}>
-              <Image
-                src="/images/logo.png"
-                alt="PlantBasedHub Logo"
-                width={50}
-                height={50}
-                className={styles.logoImage}
-                priority
-              />
-              <span>PlantBasedHub</span>
+      {/* Desktop Navigation */}
+      <nav className={styles.desktopNav}>
+        <div className={styles.navContent}>
+          <Link href="/feed" className={styles.logo}>
+            <Image
+              src="/images/logo.png"
+              alt="PlantBasedHub Logo"
+              width={40}
+              height={40}
+              className={styles.logoImage}
+              priority
+            />
+          </Link>
+          <div className={styles.navLinks}>
+            <Link href="/feed" className={styles.navLink}>
+              <FiHome size={24} />
+              <span>Home</span>
+            </Link>
+            <button className={styles.navLink}>
+              <FiSearch size={24} />
+              <span>Search</span>
+            </button>
+            <Link href="/notifications" className={styles.navLink}>
+              <FiHeart size={24} />
+              <span>Notifications</span>
+            </Link>
+            <Link href="/profile" className={`${styles.navLink} ${styles.active}`}>
+              <FiUser size={24} />
+              <span>Profile</span>
             </Link>
           </div>
-          
-          <div className={styles.headerRight}>
-            <button 
-              className={styles.notificationButton}
-              onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
-            >
-              🔔
-            </button>
-            <button className={styles.messageButton} onClick={() => router.push('/chat')}>
-              ✉️
-            </button>
-            <button className={styles.cartButton} onClick={() => router.push('/store')}>
-              🛍️
-            </button>
-            <div className={styles.headerProfileContainer}>
-              <button 
-                className={styles.profileButton}
-                onClick={() => setIsProfileOpen(!isProfileOpen)}
-                aria-label="Open profile menu"
-              >
-                <Image
-                  src={user.prefs?.avatarUrl || '/images/default-avatar.jpg'}
-                  alt="Profile"
-                  width={32}
-                  height={32}
-                  className={styles.avatar}
-                  priority
-                />
-              </button>
-              <ProfileDropdown
-                isOpen={isProfileOpen}
-                onClose={() => setIsProfileOpen(false)}
-                user={user}
-              />
-            </div>
-          </div>
+          <button className={styles.menuButton}>
+            <FiMenu size={24} />
+            <span>More</span>
+          </button>
         </div>
-      </header>
+      </nav>
 
       <main className={styles.main}>
         <div className={styles.profileContainer}>
-          <div className={styles.profileInfo}>
-            <div className={styles.profileHeader}>
-              <div className={styles.avatarContainer}>
-                <Image
-                  src={user.prefs?.avatarUrl || '/images/default-avatar.jpg'}
-                  alt={user.name || 'User'}
-                  width={100}
-                  height={100}
-                  className={styles.profileAvatar}
-                />
+          {/* Profile Header */}
+          <div className={styles.profileHeader}>
+            <div className={styles.avatarContainer}>
+              <Image
+                src={user?.prefs?.avatarUrl || '/images/default-avatar.jpg'}
+                alt={user?.name || 'User'}
+                width={150}
+                height={150}
+                className={styles.profileAvatar}
+                priority
+              />
+            </div>
+            <div className={styles.profileInfo}>
+              <div className={styles.profileNameRow}>
+                <h1>{user?.name || 'User'}</h1>
+                <div className={styles.profileActions}>
+                  <button className={styles.editProfileButton}>Edit Profile</button>
+                  <button className={styles.settingsButton}>
+                    <FiMenu size={20} />
+                  </button>
+                </div>
               </div>
+              
               <div className={styles.profileStats}>
                 <div className={styles.stat}>
-                  <span className={styles.statNumber}>{user.prefs?.posts || 0}</span>
-                  <span className={styles.statLabel}>Posts</span>
+                  <span className={styles.statNumber}>{user?.prefs?.posts?.length || 0}</span>
+                  <span className={styles.statLabel}>posts</span>
                 </div>
                 <div className={styles.stat}>
-                  <span className={styles.statNumber}>{user.prefs?.followers || 0}</span>
-                  <span className={styles.statLabel}>Followers</span>
+                  <span className={styles.statNumber}>{user?.prefs?.followers || 0}</span>
+                  <span className={styles.statLabel}>followers</span>
                 </div>
                 <div className={styles.stat}>
-                  <span className={styles.statNumber}>{user.prefs?.following || 0}</span>
-                  <span className={styles.statLabel}>Following</span>
+                  <span className={styles.statNumber}>{user?.prefs?.following || 0}</span>
+                  <span className={styles.statLabel}>following</span>
                 </div>
               </div>
-            </div>
 
-            <div className={styles.profileBio}>
-              <h2>{user.name || 'User'}</h2>
-              <span className={styles.username}>@{user.email?.split('@')[0]}</span>
-              <p>{user.prefs?.bio || 'No bio yet'}</p>
-              <div className={styles.profileActions}>
-                <button
-                  className={styles.editProfileButton}
-                  onClick={() => router.push('/settings')}
-                >
-                  Edit Profile
-                </button>
-                <button className={styles.logoutButton} onClick={handleLogout}>
-                  Logout
-                </button>
+              <div className={styles.profileBio}>
+                <p className={styles.username}>@{user?.email?.split('@')[0]}</p>
+                <p className={styles.bioText}>{user?.prefs?.bio || 'Photographer, travelholic, food lover'}</p>
               </div>
             </div>
           </div>
 
+          {/* Profile Tabs */}
           <div className={styles.profileTabs}>
             <button
               className={`${styles.tab} ${activeTab === 'posts' ? styles.active : ''}`}
               onClick={() => setActiveTab('posts')}
             >
-              Posts
+              POSTS
             </button>
             <button
               className={`${styles.tab} ${activeTab === 'saved' ? styles.active : ''}`}
               onClick={() => setActiveTab('saved')}
             >
-              Saved
+              SAVED
             </button>
             <button
               className={`${styles.tab} ${activeTab === 'liked' ? styles.active : ''}`}
               onClick={() => setActiveTab('liked')}
             >
-              Liked
+              LIKED
             </button>
           </div>
 
+          {/* Posts Grid */}
           <div className={styles.postsGrid}>
-            {(user.prefs?.posts || []).map((post: Post) => (
+            {(user?.prefs?.posts || []).map((post: Post) => (
               <div key={post.id} className={styles.postCard}>
                 <Image
                   src={post.imageUrl || '/images/default-post.jpg'}
@@ -271,6 +258,7 @@ export default function Profile() {
                   width={300}
                   height={300}
                   className={styles.postImage}
+                  layout="responsive"
                 />
                 <div className={styles.postOverlay}>
                   <div className={styles.postStats}>
@@ -283,6 +271,22 @@ export default function Profile() {
           </div>
         </div>
       </main>
+
+      {/* Mobile Navigation */}
+      <nav className={styles.mobileNav}>
+        <Link href="/feed" className={styles.navLink}>
+          <FiHome size={24} />
+        </Link>
+        <button className={styles.navLink}>
+          <FiSearch size={24} />
+        </button>
+        <Link href="/notifications" className={styles.navLink}>
+          <FiHeart size={24} />
+        </Link>
+        <Link href="/profile" className={`${styles.navLink} ${styles.active}`}>
+          <FiUser size={24} />
+        </Link>
+      </nav>
     </div>
   );
 } 
