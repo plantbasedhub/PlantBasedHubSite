@@ -96,7 +96,7 @@ export async function logout(): Promise<void> {
     await account.deleteSession('current');
     console.debug('[Auth] Logout realizado com sucesso');
     toast.success('Logout realizado com sucesso!');
-    router.push('/auth');
+    router.push('/');
   } catch {
     console.error('[Auth] Erro no logout');
     toast.error('Não foi possível fazer logout. Tente novamente.');

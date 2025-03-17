@@ -18,16 +18,24 @@ export default function Profile() {
   const [user, setUser] = useState<Models.User<Models.Preferences> | null>(null);
   const [posts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const checkAuth = async () => {
-      const currentUser = await getCurrentUser();
-      if (!currentUser) {
-        router.push('/auth');
-        return;
+      try {
+        setLoading(true);
+        const currentUser = await getCurrentUser();
+        if (!currentUser) {
+          router.push('/auth');
+          return;
+        }
+        setUser(currentUser);
+      } catch (err) {
+        console.error('Erro ao carregar usuário:', err);
+        setError('Erro ao carregar perfil. Tente novamente.');
+      } finally {
+        setLoading(false);
       }
-      setUser(currentUser);
-      setLoading(false);
     };
 
     checkAuth();
@@ -39,9 +47,26 @@ export default function Profile() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background">
-        <div className="flex items-center justify-center min-h-screen">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      <div className="fixed inset-0 bg-background flex items-center justify-center">
+        <div className="flex flex-col items-center space-y-4">
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-primary border-t-transparent"></div>
+          <p className="text-foreground">Carregando perfil...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-destructive mb-4">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
+          >
+            Tentar novamente
+          </button>
         </div>
       </div>
     );
