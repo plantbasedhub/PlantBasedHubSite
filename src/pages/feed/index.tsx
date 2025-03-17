@@ -9,6 +9,7 @@ import { getCurrentUser, getUserAvatar } from '../../lib/auth';
 
 function ProfileDropdown({ isOpen, onClose, user }) {
   const dropdownRef = useRef(null);
+  const router = useRouter();
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -20,6 +21,16 @@ function ProfileDropdown({ isOpen, onClose, user }) {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [onClose]);
+
+  const handleNavigation = (path) => {
+    onClose();
+    router.push(path);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('auth_token');
+    router.push('/');
+  };
 
   if (!isOpen) return null;
 
@@ -36,16 +47,13 @@ function ProfileDropdown({ isOpen, onClose, user }) {
         <span>{user?.name || 'Usuário'}</span>
       </div>
       <div className={styles.dropdownContent}>
-        <Link href="/profile" className={styles.dropdownItem} onClick={onClose}>
+        <button className={styles.dropdownItem} onClick={() => handleNavigation('/profile')}>
           <span>👤</span> Profile
-        </Link>
-        <Link href="/settings" className={styles.dropdownItem} onClick={onClose}>
+        </button>
+        <button className={styles.dropdownItem} onClick={() => handleNavigation('/settings')}>
           <span>⚙️</span> Settings
-        </Link>
-        <button className={styles.dropdownItem} onClick={() => {
-          localStorage.removeItem('auth_token');
-          window.location.href = '/';
-        }}>
+        </button>
+        <button className={styles.dropdownItem} onClick={handleLogout}>
           <span>🚪</span> Logout
         </button>
       </div>
@@ -118,18 +126,19 @@ const Feed = () => {
               className={styles.notificationButton}
               onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
             >
-              <span>🔔</span>
+              🔔
             </button>
-            <Link href="/chat">
-              <button className={styles.messageButton}><span>✉️</span></button>
-            </Link>
-            <Link href="/store">
-              <button className={styles.cartButton}><span>🛍️</span></button>
-            </Link>
+            <button className={styles.messageButton} onClick={() => router.push('/chat')}>
+              ✉️
+            </button>
+            <button className={styles.cartButton} onClick={() => router.push('/store')}>
+              🛍️
+            </button>
             <div className={styles.profileContainer}>
               <button 
                 className={styles.profileButton}
                 onClick={() => setIsProfileOpen(!isProfileOpen)}
+                aria-label="Open profile menu"
               >
                 <Image
                   src={getUserAvatar(user)}
@@ -137,6 +146,7 @@ const Feed = () => {
                   width={32}
                   height={32}
                   className={styles.avatar}
+                  priority
                 />
               </button>
               <ProfileDropdown
