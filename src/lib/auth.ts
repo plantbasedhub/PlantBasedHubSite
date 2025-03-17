@@ -8,91 +8,67 @@ export async function checkSession(): Promise<boolean> {
   try {
     const session = await account.getSession('current');
     return !!session;
-  } catch {
+  } catch (error) {
+    console.error('Erro ao verificar sessão:', error);
     return false;
   }
 }
 
 export function getUserAvatar(user: Models.User<Models.Preferences> | null): string {
-  if (!user) return '/images/avatar-default.svg';
-  
-  // Se o usuário tiver uma imagem de perfil, retorna ela
-  if (user.prefs?.avatar) {
-    return user.prefs.avatar;
-  }
-  
-  // Se não tiver, retorna a imagem padrão
-  return '/images/avatar-default.svg';
+  if (!user) return '/images/avatar_default.svg';
+  return user.prefs?.avatar || '/images/avatar_default.svg';
 }
 
 export async function login(email: string, password: string): Promise<boolean> {
   try {
-    // Verifica se já tentou fazer login recentemente
-    const now = Date.now();
-    if (now - lastLoginAttempt < LOGIN_COOLDOWN) {
-      await new Promise(resolve => setTimeout(resolve, LOGIN_COOLDOWN - (now - lastLoginAttempt)));
-    }
-    
-    lastLoginAttempt = Date.now();
-    const session = await account.createEmailPasswordSession(email, password);
-    console.log('Login - Sessão criada:', session);
-    
-    // Força uma atualização da página para garantir que o cookie seja definido
-    window.location.href = '/feed';
+    console.log('Tentando fazer login com:', email);
+    const session = await account.createSession(email, password);
+    console.log('Sessão criada com sucesso:', session);
     return true;
   } catch (error) {
-    console.error('Erro no login:', error);
+    console.error('Erro detalhado no login:', error);
     if (error instanceof Error) {
-      if (error.message.includes('Rate limit')) {
-        throw new Error('Muitas tentativas de login. Por favor, aguarde alguns segundos antes de tentar novamente.');
-      }
+      throw new Error('Email ou senha inválidos. Por favor, verifique suas credenciais.');
     }
-    return false;
+    throw new Error('Erro ao fazer login. Tente novamente.');
   }
 }
 
 export async function register(email: string, password: string, name: string): Promise<boolean> {
   try {
-    // Verifica se já tentou fazer login recentemente
-    const now = Date.now();
-    if (now - lastLoginAttempt < LOGIN_COOLDOWN) {
-      await new Promise(resolve => setTimeout(resolve, LOGIN_COOLDOWN - (now - lastLoginAttempt)));
-    }
+    console.log('Tentando criar conta para:', email);
+    const user = await account.create('unique()', email, password, name);
+    console.log('Conta criada com sucesso:', user);
     
-    lastLoginAttempt = Date.now();
-    await account.create(ID.unique(), email, password, name);
-    await account.createVerification('https://plantbasedhub.store/verify');
-    return await login(email, password);
+    // Faz login automaticamente após o registro
+    const success = await login(email, password);
+    return success;
   } catch (error) {
-    console.error('Erro no registro:', error);
+    console.error('Erro detalhado no registro:', error);
     if (error instanceof Error) {
-      if (error.message.includes('Rate limit')) {
-        throw new Error('Muitas tentativas de registro. Por favor, aguarde alguns segundos antes de tentar novamente.');
-      }
+      throw new Error('Erro ao criar conta. Por favor, tente novamente.');
     }
-    return false;
+    throw new Error('Erro ao registrar. Tente novamente.');
   }
 }
 
 export async function logout(): Promise<void> {
   try {
-    const hasSession = await checkSession();
-    if (hasSession) {
-      await account.deleteSession('current');
-    }
-    // Força uma atualização da página para garantir que o cookie seja removido
-    window.location.href = '/';
-  } catch {
-    window.location.href = '/';
+    await account.deleteSession('current');
+    console.log('Logout realizado com sucesso');
+  } catch (error) {
+    console.error('Erro ao fazer logout:', error);
+    throw new Error('Erro ao fazer logout. Tente novamente.');
   }
 }
 
 export async function getCurrentUser(): Promise<Models.User<Models.Preferences> | null> {
   try {
-    const hasSession = await checkSession();
-    if (!hasSession) return null;
-    return await account.get();
-  } catch {
+    const user = await account.get();
+    console.log('Usuário atual:', user);
+    return user;
+  } catch (error) {
+    console.error('Erro ao obter usuário atual:', error);
     return null;
   }
 } 
