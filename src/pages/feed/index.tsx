@@ -70,15 +70,24 @@ const Feed = () => {
   useEffect(() => {
     const loadUser = async () => {
       try {
+        setIsLoading(true);
         const hasSession = await checkSession();
         if (!hasSession) {
+          console.debug('[Feed] Nenhuma sessão encontrada, redirecionando para auth');
           router.push('/auth');
           return;
         }
+        
         const currentUser = await getCurrentUser();
+        if (!currentUser) {
+          console.debug('[Feed] Usuário não encontrado, redirecionando para auth');
+          router.push('/auth');
+          return;
+        }
+        
         setUser(currentUser);
       } catch (error) {
-        console.error('Erro ao carregar usuário:', error);
+        console.error('[Feed] Erro ao carregar usuário:', error);
         router.push('/auth');
       } finally {
         setIsLoading(false);
@@ -87,9 +96,6 @@ const Feed = () => {
     loadUser();
   }, [router]);
 
-  if (isLoading) {
-    return <div>Carregando...</div>;
-  }
 
   // Mock stories data
   const stories = [

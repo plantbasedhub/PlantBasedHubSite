@@ -49,6 +49,7 @@ const Auth = () => {
         const success = await register(email, password, name);
         if (success) {
           toast.success("Registro bem-sucedido!");
+          await new Promise(resolve => setTimeout(resolve, 1000));
           router.push('/feed');
         } else {
           setError('Erro ao criar conta. Tente novamente.');
@@ -57,6 +58,7 @@ const Auth = () => {
         const success = await login(email, password);
         if (success) {
           toast.success("Login bem-sucedido!");
+          await new Promise(resolve => setTimeout(resolve, 1000));
           router.push('/feed');
         } else {
           setError('Email ou senha inválidos');

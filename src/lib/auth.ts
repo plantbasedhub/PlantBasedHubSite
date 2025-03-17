@@ -1,7 +1,7 @@
 import { account, ID } from './appwrite';
 import { Models } from 'appwrite';
 import router from 'next/router';
-import { toast } from 'react-hot-toast';
+import { toast } from 'react-toastify';
 
 export async function checkSession(): Promise<boolean> {
   try {
@@ -34,9 +34,19 @@ export async function login(email: string, password: string): Promise<boolean> {
 
     await account.createEmailPasswordSession(email, password);
     console.debug('[Auth] Sessão criada com sucesso');
-    toast.success('Login realizado com sucesso!');
-
+    
+    // Aguarda um momento para garantir que a sessão seja estabelecida
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    // Verifica se a sessão foi estabelecida corretamente
+    const session = await account.getSession('current');
+    if (!session) {
+      throw new Error('Falha ao estabelecer sessão');
+    }
+    
     await account.get();
+    console.debug('[Auth] Sessão estabelecida com sucesso');
+    toast.success('Login realizado com sucesso!');
     return true;
   } catch (error) {
     console.error('[Auth] Erro no login:', error);
@@ -111,4 +121,4 @@ export async function getCurrentUser(): Promise<Models.User<Models.Preferences> 
     console.debug('[Auth] Usuário não encontrado');
     return null;
   }
-} 
+}

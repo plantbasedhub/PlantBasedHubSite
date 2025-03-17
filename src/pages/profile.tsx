@@ -17,13 +17,11 @@ export default function Profile() {
   const router = useRouter();
   const [user, setUser] = useState<Models.User<Models.Preferences> | null>(null);
   const [posts] = useState<Post[]>([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        setLoading(true);
         const currentUser = await getCurrentUser();
         if (!currentUser) {
           router.push('/auth');
@@ -33,8 +31,6 @@ export default function Profile() {
       } catch (err) {
         console.error('Erro ao carregar usuário:', err);
         setError('Erro ao carregar perfil. Tente novamente.');
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -44,17 +40,6 @@ export default function Profile() {
   const handleLogout = async () => {
     await logout();
   };
-
-  if (loading) {
-    return (
-      <div className="fixed inset-0 bg-background flex items-center justify-center">
-        <div className="flex flex-col items-center space-y-4">
-          <div className="animate-spin rounded-full h-16 w-16 border-4 border-primary border-t-transparent"></div>
-          <p className="text-foreground">Carregando perfil...</p>
-        </div>
-      </div>
-    );
-  }
 
   if (error) {
     return (
